@@ -8,7 +8,10 @@ Here we include the code necessary to obtain the results in the paper.
 The majority of the code requires a compiled version of LAMMPS. We used the 23 June 2022 version for these calculations running on Linux with standard libraries. 
 The code for the PMF simulations requires Gromacs 2019.3 instead. 
 There are seven directories in this repository. The numbered directories correspond to a summary of the different simulations we carried out, and each one contains a separate readme.txt file detailing its contents. 
-The 'Reaction_files' directory, contains reaction maps used by the dynamic algorithm in several of the previous directories.
+The 'Scripts_Mpipi-Recharged' directory, includes:
+-lammps_mpipiv2_idp.lmp: lammps script to simulate IDPs using NVT thermostat 
+-lammps_mpipiv2_rna.lmp: lammps script to simulate IDPs and RNA using NVT thermostat 
+-TYPES.txt: File containing the correspondence between the different amino acids and the employed number ID in lammps (from 1 to 20). For RNA is A=41, G=42, C=43, U=44 
 
 ################ LAMMPS ################ Instructions on how to compile Lammps are provided at https://docs.lammps.org/Build_make.html.
 
