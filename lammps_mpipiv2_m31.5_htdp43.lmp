@@ -1,0 +1,973 @@
+# Multiprotein complexes
+#
+#
+units       real
+dimension   3
+boundary    p p p
+atom_style  full
+
+bond_style  harmonic
+
+read_data     data.xyz
+
+#--------  Input variables  ------#
+variable T equal 300.0
+variable csx equal 150 # Electrolyte solution ionic strength in mM
+#---------------------------------
+
+#-------  Derived variables ------#
+variable cs equal (${csx}/1000)*6.022e26 # Electrolyte solution ionic strength in m^-3
+variable er equal 5321/${T}+233.76-0.9297*${T}+0.001417*${T}*${T}-0.0000008292*${T}*${T}*${T} # Relative dielectric constant of the medium
+variable bjerrum equal (1.671e-5)/(${er}*${T}) # Bjerrum length in meters
+variable debyelen equal sqrt(1/(8*3.141592*${bjerrum}*${cs})) # Debye length in meters
+variable debyelenang equal ${debyelen}*1e10 # Debye length in Angstrom
+variable kappa equal 1/${debyelenang} # Inverse of debye length in Angstrom^-1 to go to pair style command
+#----------------------------------
+
+pair_style  hybrid/overlay wf/cut 25.0 yukawa ${kappa} 0.0 
+bond_coeff          1     9.600     3.81 
+#bond_coeff          2     9.600     5.0 
+### Epsilon scaling
+### Globular-globular 0.7; globular-IDP 0.7 and IDP-IDP 1
+pair_coeff * * wf/cut 0.0 0.0 1 1 0.0
+pair_coeff	1	1	wf/cut	0.07389	6.46795	1	4	19.40385
+pair_coeff	1	2	wf/cut	0.12343	5.58153	1	3	16.74459
+pair_coeff	1	3	wf/cut	0.07057	6.56964	1	4	19.70893
+pair_coeff	1	4	wf/cut	0.06622	6.1785	1	4	18.53551
+pair_coeff	1	5	wf/cut	0.28759	6.6535	1	3	19.9605
+pair_coeff	1	6	wf/cut	0.08252	5.86901	1	4	17.60703
+pair_coeff	1	7	wf/cut	0.12797	6.14574	1	3	18.4372
+pair_coeff	1	8	wf/cut	0.13538	6.32281	1	3	18.96843
+pair_coeff	1	9	wf/cut	0.37266	6.60079	1	3	19.80237
+pair_coeff	1	10	wf/cut	0.0443	6.36698	1	5	19.10093
+pair_coeff	1	11	wf/cut	0.04902	6.50101	1	4	19.50303
+pair_coeff	1	12	wf/cut	0.21396	6.3729	1	3	19.1187
+pair_coeff	1	13	wf/cut	0.4923	6.76725	1	3	20.30175
+pair_coeff	1	14	wf/cut	0.35069	6.54875	1	3	19.64625
+pair_coeff	1	15	wf/cut	0.09308	5.94031	1	4	17.82093
+pair_coeff	1	16	wf/cut	0.35933	6.40287	1	3	19.2086
+pair_coeff	1	17	wf/cut	0.20822	6.19565	1	3	18.58695
+pair_coeff	1	18	wf/cut	0.10794	6.13706	1	4	18.41117
+pair_coeff	1	19	wf/cut	0.09979	6.09615	1	4	18.28846
+pair_coeff	1	20	wf/cut	0.03979	6.69482	1	5	20.08445
+pair_coeff	1	21	wf/cut	0.06182	6.46795	1	4	19.40385
+pair_coeff	1	22	wf/cut	0.10327	5.58153	1	3	16.74459
+pair_coeff	1	23	wf/cut	0.05904	6.56964	1	4	19.70893
+pair_coeff	1	24	wf/cut	0.05541	6.1785	1	4	18.53551
+pair_coeff	1	25	wf/cut	0.24062	6.6535	1	3	19.9605
+pair_coeff	1	26	wf/cut	0.06905	5.86901	1	4	17.60703
+pair_coeff	1	27	wf/cut	0.10707	6.14574	1	3	18.4372
+pair_coeff	1	28	wf/cut	0.11326	6.32281	1	3	18.96843
+pair_coeff	1	29	wf/cut	0.32448	6.60079	1	3	19.80237
+pair_coeff	1	30	wf/cut	0.03706	6.36698	1	5	19.10093
+pair_coeff	1	31	wf/cut	0.04101	6.50101	1	4	19.50303
+pair_coeff	1	32	wf/cut	0.17901	6.3729	1	3	19.1187
+pair_coeff	1	33	wf/cut	0.4287	6.76725	1	3	20.30175
+pair_coeff	1	34	wf/cut	0.30533	6.54875	1	3	19.64625
+pair_coeff	1	35	wf/cut	0.07787	5.94031	1	4	17.82093
+pair_coeff	1	36	wf/cut	0.30064	6.40287	1	3	19.2086
+pair_coeff	1	37	wf/cut	0.1742	6.19565	1	3	18.58695
+pair_coeff	1	38	wf/cut	0.09031	6.13706	1	4	18.41117
+pair_coeff	1	39	wf/cut	0.08349	6.09615	1	4	18.28846
+pair_coeff	1	40	wf/cut	0.03329	6.69482	1	5	20.08445
+pair_coeff	2	2	wf/cut	0.17298	4.69511	1	3	14.08533
+pair_coeff	2	3	wf/cut	0.12309	5.68323	1	4	17.04968
+pair_coeff	2	4	wf/cut	0.11577	5.29209	1	3	15.87626
+pair_coeff	2	5	wf/cut	0.33532	5.76708	1	3	17.30124
+pair_coeff	2	6	wf/cut	0.13207	4.98259	1	3	14.94777
+pair_coeff	2	7	wf/cut	0.17579	5.25931	1	3	15.77794
+pair_coeff	2	8	wf/cut	0.1832	5.43639	1	3	16.30917
+pair_coeff	2	9	wf/cut	0.41949	5.71437	1	3	17.14311
+pair_coeff	2	10	wf/cut	0.09385	5.48055	1	4	16.44167
+pair_coeff	2	11	wf/cut	0.09856	5.61459	1	4	16.84377
+pair_coeff	2	12	wf/cut	0.26351	5.48648	1	3	16.45944
+pair_coeff	2	13	wf/cut	0.53932	5.88083	1	3	17.64249
+pair_coeff	2	14	wf/cut	0.39682	5.66233	1	3	16.98699
+pair_coeff	2	15	wf/cut	0.14262	5.05389	1	3	15.16167
+pair_coeff	2	16	wf/cut	0.40887	5.51645	1	3	16.54933
+pair_coeff	2	17	wf/cut	0.25776	5.30923	1	3	15.92769
+pair_coeff	2	18	wf/cut	0.15749	5.25063	1	3	15.75191
+pair_coeff	2	19	wf/cut	0.14933	5.20974	1	3	15.62921
+pair_coeff	2	20	wf/cut	0.08933	5.80839	1	4	17.42518
+pair_coeff	2	21	wf/cut	0.10327	5.58153	1	3	16.74459
+pair_coeff	2	22	wf/cut	0.14472	4.69511	1	3	14.08533
+pair_coeff	2	23	wf/cut	0.10298	5.68323	1	4	17.04968
+pair_coeff	2	24	wf/cut	0.09686	5.29209	1	3	15.87626
+pair_coeff	2	25	wf/cut	0.28054	5.76708	1	3	17.30124
+pair_coeff	2	26	wf/cut	0.1105	4.98259	1	3	14.94777
+pair_coeff	2	27	wf/cut	0.14708	5.25931	1	3	15.77794
+pair_coeff	2	28	wf/cut	0.15328	5.43639	1	3	16.30917
+pair_coeff	2	29	wf/cut	0.36526	5.71437	1	3	17.14311
+pair_coeff	2	30	wf/cut	0.07851	5.48055	1	4	16.44167
+pair_coeff	2	31	wf/cut	0.08247	5.61459	1	4	16.84377
+pair_coeff	2	32	wf/cut	0.22046	5.48648	1	3	16.45944
+pair_coeff	2	33	wf/cut	0.46967	5.88083	1	3	17.64249
+pair_coeff	2	34	wf/cut	0.34552	5.66233	1	3	16.98699
+pair_coeff	2	35	wf/cut	0.11932	5.05389	1	3	15.16167
+pair_coeff	2	36	wf/cut	0.34209	5.51645	1	3	16.54933
+pair_coeff	2	37	wf/cut	0.21566	5.30923	1	3	15.92769
+pair_coeff	2	38	wf/cut	0.13176	5.25063	1	3	15.75191
+pair_coeff	2	39	wf/cut	0.12494	5.20974	1	3	15.62921
+pair_coeff	2	40	wf/cut	0.07474	5.80839	1	4	17.42518
+pair_coeff	3	3	wf/cut	0.04553	6.67134	1	5	20.01402
+pair_coeff	3	4	wf/cut	0.06744	6.2802	1	4	18.8406
+pair_coeff	3	5	wf/cut	0.21671	6.7552	1	3	20.26559
+pair_coeff	3	6	wf/cut	0.08472	5.9707	1	4	17.91212
+pair_coeff	3	7	wf/cut	0.00088	6.24743	1	9	18.74229
+pair_coeff	3	8	wf/cut	0.00094	6.4245	1	9	19.27351
+pair_coeff	3	9	wf/cut	0.18415	6.70248	1	3	20.10745
+pair_coeff	3	10	wf/cut	0.04421	6.46867	1	5	19.40601
+pair_coeff	3	11	wf/cut	0.04921	6.60271	1	5	19.80812
+pair_coeff	3	12	wf/cut	0.22405	6.47459	1	3	19.42378
+pair_coeff	3	13	wf/cut	0.19838	6.86895	1	3	20.60684
+pair_coeff	3	14	wf/cut	0.20609	6.65044	1	3	19.95134
+pair_coeff	3	15	wf/cut	0.09591	6.042	1	4	18.12601
+pair_coeff	3	16	wf/cut	0.16626	6.50456	1	3	19.51368
+pair_coeff	3	17	wf/cut	0.21795	6.29734	1	3	18.89203
+pair_coeff	3	18	wf/cut	0.11167	6.23875	1	4	18.71625
+pair_coeff	3	19	wf/cut	0.10302	6.19785	1	4	18.59355
+pair_coeff	3	20	wf/cut	0.03942	6.79651	1	5	20.38953
+pair_coeff	3	21	wf/cut	0.06323	6.56964	1	4	19.70893
+pair_coeff	3	22	wf/cut	0.10716	5.68323	1	4	17.04968
+pair_coeff	3	23	wf/cut	0.03809	6.67134	1	5	20.01402
+pair_coeff	3	24	wf/cut	0.05643	6.2802	1	4	18.8406
+pair_coeff	3	25	wf/cut	0.18132	6.7552	1	3	20.26559
+pair_coeff	3	26	wf/cut	0.07089	5.9707	1	4	17.91212
+pair_coeff	3	27	wf/cut	0.00073	6.24743	1	9	18.74229
+pair_coeff	3	28	wf/cut	0.00079	6.4245	1	9	19.27351
+pair_coeff	3	29	wf/cut	0.16026	6.70248	1	3	20.10745
+pair_coeff	3	30	wf/cut	0.03698	6.46867	1	5	19.40601
+pair_coeff	3	31	wf/cut	0.04118	6.60271	1	5	19.80812
+pair_coeff	3	32	wf/cut	0.18745	6.47459	1	3	19.42378
+pair_coeff	3	33	wf/cut	0.17265	6.86895	1	3	20.60684
+pair_coeff	3	34	wf/cut	0.17937	6.65044	1	3	19.95134
+pair_coeff	3	35	wf/cut	0.08025	6.042	1	4	18.12601
+pair_coeff	3	36	wf/cut	0.1391	6.50456	1	3	19.51368
+pair_coeff	3	37	wf/cut	0.18236	6.29734	1	3	18.89203
+pair_coeff	3	38	wf/cut	0.09343	6.23875	1	4	18.71625
+pair_coeff	3	39	wf/cut	0.0862	6.19785	1	4	18.59355
+pair_coeff	3	40	wf/cut	0.03299	6.79651	1	5	20.38953
+pair_coeff	4	4	wf/cut	0.05856	5.88906	1	4	17.66718
+pair_coeff	4	5	wf/cut	0.28021	6.36406	1	3	19.09217
+pair_coeff	4	6	wf/cut	0.07486	5.57956	1	4	16.73869
+pair_coeff	4	7	wf/cut	0.12057	5.85629	1	3	17.56887
+pair_coeff	4	8	wf/cut	0.12798	6.03336	1	3	18.10009
+pair_coeff	4	9	wf/cut	0.36542	6.31134	1	3	18.93403
+pair_coeff	4	10	wf/cut	0.03664	6.07753	1	5	18.23259
+pair_coeff	4	11	wf/cut	0.04135	6.21157	1	5	18.6347
+pair_coeff	4	12	wf/cut	0.2063	6.08345	1	3	18.25036
+pair_coeff	4	13	wf/cut	0.48503	6.47781	1	3	19.43342
+pair_coeff	4	14	wf/cut	0.34275	6.2593	1	3	18.77792
+pair_coeff	4	15	wf/cut	0.08541	5.65086	1	4	16.95259
+pair_coeff	4	16	wf/cut	0.35166	6.11342	1	3	18.34026
+pair_coeff	4	17	wf/cut	0.20055	5.9062	1	3	17.71861
+pair_coeff	4	18	wf/cut	0.10028	5.84761	1	4	17.54283
+pair_coeff	4	19	wf/cut	0.09212	5.80671	1	4	17.42013
+pair_coeff	4	20	wf/cut	0.03212	6.40537	1	5	19.21611
+pair_coeff	4	21	wf/cut	0.05541	6.1785	1	4	18.53551
+pair_coeff	4	22	wf/cut	0.09686	5.29209	1	3	15.87626
+pair_coeff	4	23	wf/cut	0.05224	6.2802	1	4	18.8406
+pair_coeff	4	24	wf/cut	0.04899	5.88906	1	4	17.66718
+pair_coeff	4	25	wf/cut	0.23444	6.36406	1	3	19.09217
+pair_coeff	4	26	wf/cut	0.06263	5.57956	1	4	16.73869
+pair_coeff	4	27	wf/cut	0.10088	5.85629	1	3	17.56887
+pair_coeff	4	28	wf/cut	0.10707	6.03336	1	3	18.10009
+pair_coeff	4	29	wf/cut	0.31816	6.31134	1	3	18.93403
+pair_coeff	4	30	wf/cut	0.03065	6.07753	1	5	18.23259
+pair_coeff	4	31	wf/cut	0.0346	6.21157	1	5	18.6347
+pair_coeff	4	32	wf/cut	0.1726	6.08345	1	3	18.25036
+pair_coeff	4	33	wf/cut	0.42237	6.47781	1	3	19.43342
+pair_coeff	4	34	wf/cut	0.29841	6.2593	1	3	18.77792
+pair_coeff	4	35	wf/cut	0.07146	5.65086	1	4	16.95259
+pair_coeff	4	36	wf/cut	0.29423	6.11342	1	3	18.34026
+pair_coeff	4	37	wf/cut	0.16779	5.9062	1	3	17.71861
+pair_coeff	4	38	wf/cut	0.08389	5.84761	1	4	17.54283
+pair_coeff	4	39	wf/cut	0.07708	5.80671	1	4	17.42013
+pair_coeff	4	40	wf/cut	0.02688	6.40537	1	5	19.21611
+pair_coeff	5	5	wf/cut	0.15073	6.83905	1	3	20.51715
+pair_coeff	5	6	wf/cut	0.29591	6.05456	1	3	18.16368
+pair_coeff	5	7	wf/cut	0.00674	6.33129	1	7	18.99385
+pair_coeff	5	8	wf/cut	0.00686	6.50836	1	7	19.52508
+pair_coeff	5	9	wf/cut	0.80421	6.78634	1	2	20.35902
+pair_coeff	5	10	wf/cut	0.25909	6.55253	1	3	19.65758
+pair_coeff	5	11	wf/cut	0.26364	6.68656	1	3	20.05968
+pair_coeff	5	12	wf/cut	0.42252	6.55845	1	3	19.67535
+pair_coeff	5	13	wf/cut	0.93408	6.9528	1	2	20.8584
+pair_coeff	5	14	wf/cut	0.717	6.7343	1	2	20.2029
+pair_coeff	5	15	wf/cut	0.30607	6.12586	1	3	18.37758
+pair_coeff	5	16	wf/cut	0.20829	6.58842	1	3	19.76525
+pair_coeff	5	17	wf/cut	0.41698	6.3812	1	3	19.1436
+pair_coeff	5	18	wf/cut	0.32039	6.32261	1	3	18.96782
+pair_coeff	5	19	wf/cut	0.31254	6.28171	1	3	18.84511
+pair_coeff	5	20	wf/cut	0.25474	6.88037	1	3	20.64109
+pair_coeff	5	21	wf/cut	0.24062	6.6535	1	3	19.9605
+pair_coeff	5	22	wf/cut	0.28054	5.76708	1	3	17.30124
+pair_coeff	5	23	wf/cut	0.17713	6.7552	1	3	20.26559
+pair_coeff	5	24	wf/cut	0.23444	6.36406	1	3	19.09217
+pair_coeff	5	25	wf/cut	0.12611	6.83905	1	3	20.51715
+pair_coeff	5	26	wf/cut	0.24758	6.05456	1	3	18.16368
+pair_coeff	5	27	wf/cut	0.00564	6.33129	1	7	18.99385
+pair_coeff	5	28	wf/cut	0.00574	6.50836	1	7	19.52508
+pair_coeff	5	29	wf/cut	0.70043	6.78634	1	2	20.35902
+pair_coeff	5	30	wf/cut	0.21677	6.55253	1	3	19.65758
+pair_coeff	5	31	wf/cut	0.22058	6.68656	1	3	20.05968
+pair_coeff	5	32	wf/cut	0.3535	6.55845	1	3	19.67535
+pair_coeff	5	33	wf/cut	0.81357	6.9528	1	2	20.8584
+pair_coeff	5	34	wf/cut	0.62445	6.7343	1	2	20.2029
+pair_coeff	5	35	wf/cut	0.25608	6.12586	1	3	18.37758
+pair_coeff	5	36	wf/cut	0.17428	6.58842	1	3	19.76525
+pair_coeff	5	37	wf/cut	0.34888	6.3812	1	3	19.1436
+pair_coeff	5	38	wf/cut	0.26807	6.32261	1	3	18.96782
+pair_coeff	5	39	wf/cut	0.26149	6.28171	1	3	18.84511
+pair_coeff	5	40	wf/cut	0.21313	6.88037	1	3	20.64109
+pair_coeff	6	6	wf/cut	0.09116	5.27007	1	4	15.81021
+pair_coeff	6	7	wf/cut	0.13631	5.54679	1	3	16.64038
+pair_coeff	6	8	wf/cut	0.14371	5.72387	1	3	17.17161
+pair_coeff	6	9	wf/cut	0.38082	6.00185	1	3	18.00555
+pair_coeff	6	10	wf/cut	0.05294	5.76803	1	4	17.3041
+pair_coeff	6	11	wf/cut	0.05765	5.90207	1	4	17.70621
+pair_coeff	6	12	wf/cut	0.22259	5.77396	1	3	17.32188
+pair_coeff	6	13	wf/cut	0.5005	6.16831	1	3	18.50493
+pair_coeff	6	14	wf/cut	0.35816	5.94981	1	3	17.84943
+pair_coeff	6	15	wf/cut	0.10171	5.34137	1	4	16.02411
+pair_coeff	6	16	wf/cut	0.36796	5.80392	1	3	17.41177
+pair_coeff	6	17	wf/cut	0.21685	5.59671	1	3	16.79013
+pair_coeff	6	18	wf/cut	0.11658	5.53811	1	3	16.61435
+pair_coeff	6	19	wf/cut	0.10842	5.49721	1	4	16.49164
+pair_coeff	6	20	wf/cut	0.04842	6.09587	1	4	18.28762
+pair_coeff	6	21	wf/cut	0.06905	5.86901	1	4	17.60703
+pair_coeff	6	22	wf/cut	0.1105	4.98259	1	3	14.94777
+pair_coeff	6	23	wf/cut	0.06671	5.9707	1	4	17.91212
+pair_coeff	6	24	wf/cut	0.06263	5.57956	1	4	16.73869
+pair_coeff	6	25	wf/cut	0.24758	6.05456	1	3	18.16368
+pair_coeff	6	26	wf/cut	0.07627	5.27007	1	4	15.81021
+pair_coeff	6	27	wf/cut	0.11404	5.54679	1	3	16.64038
+pair_coeff	6	28	wf/cut	0.12024	5.72387	1	3	17.17161
+pair_coeff	6	29	wf/cut	0.33158	6.00185	1	3	18.00555
+pair_coeff	6	30	wf/cut	0.04428	5.76803	1	4	17.3041
+pair_coeff	6	31	wf/cut	0.04824	5.90207	1	4	17.70621
+pair_coeff	6	32	wf/cut	0.18624	5.77396	1	3	17.32188
+pair_coeff	6	33	wf/cut	0.43584	6.16831	1	3	18.50493
+pair_coeff	6	34	wf/cut	0.31184	5.94981	1	3	17.84943
+pair_coeff	6	35	wf/cut	0.0851	5.34137	1	4	16.02411
+pair_coeff	6	36	wf/cut	0.30786	5.80392	1	3	17.41177
+pair_coeff	6	37	wf/cut	0.18144	5.59671	1	3	16.79013
+pair_coeff	6	38	wf/cut	0.09753	5.53811	1	3	16.61435
+pair_coeff	6	39	wf/cut	0.09072	5.49721	1	4	16.49164
+pair_coeff	6	40	wf/cut	0.04052	6.09587	1	4	18.28762
+pair_coeff	7	7	wf/cut	0.13793	5.82352	1	3	17.47056
+pair_coeff	7	8	wf/cut	0.14341	6.0006	1	3	18.00179
+pair_coeff	7	9	wf/cut	0.41324	6.27858	1	3	18.83573
+pair_coeff	7	10	wf/cut	0.09941	6.04476	1	4	18.13428
+pair_coeff	7	11	wf/cut	0.10397	6.1788	1	4	18.53638
+pair_coeff	7	12	wf/cut	0.26317	6.05068	1	3	18.15205
+pair_coeff	7	13	wf/cut	0.52893	6.44504	1	3	19.33511
+pair_coeff	7	14	wf/cut	0.39136	6.22654	1	3	18.67961
+pair_coeff	7	15	wf/cut	0.14649	5.6181	1	3	16.85429
+pair_coeff	7	16	wf/cut	0.00795	6.08065	1	7	18.24195
+pair_coeff	7	17	wf/cut	0.25762	5.87344	1	3	17.62031
+pair_coeff	7	18	wf/cut	0.16084	5.81484	1	3	17.44452
+pair_coeff	7	19	wf/cut	0.15297	5.77394	1	3	17.32182
+pair_coeff	7	20	wf/cut	0.09506	6.3726	1	4	19.1178
+pair_coeff	7	21	wf/cut	0.10707	6.14574	1	3	18.4372
+pair_coeff	7	22	wf/cut	0.14708	5.25931	1	3	15.77794
+pair_coeff	7	23	wf/cut	0.00073	6.24743	1	9	18.74229
+pair_coeff	7	24	wf/cut	0.10088	5.85629	1	3	17.56887
+pair_coeff	7	25	wf/cut	0.00564	6.33129	1	7	18.99385
+pair_coeff	7	26	wf/cut	0.11404	5.54679	1	3	16.64038
+pair_coeff	7	27	wf/cut	0.1154	5.82352	1	3	17.47056
+pair_coeff	7	28	wf/cut	0.11999	6.0006	1	3	18.00179
+pair_coeff	7	29	wf/cut	0.35982	6.27858	1	3	18.83573
+pair_coeff	7	30	wf/cut	0.08318	6.04476	1	4	18.13428
+pair_coeff	7	31	wf/cut	0.08699	6.1788	1	4	18.53638
+pair_coeff	7	32	wf/cut	0.22019	6.05068	1	3	18.15205
+pair_coeff	7	33	wf/cut	0.46061	6.44504	1	3	19.33511
+pair_coeff	7	34	wf/cut	0.34077	6.22654	1	3	18.67961
+pair_coeff	7	35	wf/cut	0.12256	5.6181	1	3	16.85429
+pair_coeff	7	36	wf/cut	0.00666	6.08065	1	7	18.24195
+pair_coeff	7	37	wf/cut	0.21554	5.87344	1	3	17.62031
+pair_coeff	7	38	wf/cut	0.13457	5.81484	1	3	17.44452
+pair_coeff	7	39	wf/cut	0.12799	5.77394	1	3	17.32182
+pair_coeff	7	40	wf/cut	0.07953	6.3726	1	4	19.1178
+pair_coeff	8	8	wf/cut	0.1489	6.17767	1	3	18.53301
+pair_coeff	8	9	wf/cut	0.42023	6.45565	1	3	19.36695
+pair_coeff	8	10	wf/cut	0.10682	6.22184	1	4	18.66551
+pair_coeff	8	11	wf/cut	0.11137	6.35587	1	4	19.06761
+pair_coeff	8	12	wf/cut	0.27057	6.22776	1	3	18.68328
+pair_coeff	8	13	wf/cut	0.53595	6.62211	1	3	19.86633
+pair_coeff	8	14	wf/cut	0.39836	6.40361	1	3	19.21083
+pair_coeff	8	15	wf/cut	0.15389	5.79517	1	3	17.38551
+pair_coeff	8	16	wf/cut	0.00801	6.25773	1	7	18.77318
+pair_coeff	8	17	wf/cut	0.26502	6.05051	1	3	18.15153
+pair_coeff	8	18	wf/cut	0.16824	5.99192	1	3	17.97575
+pair_coeff	8	19	wf/cut	0.16037	5.95101	1	3	17.85305
+pair_coeff	8	20	wf/cut	0.10246	6.54968	1	4	19.64903
+pair_coeff	8	21	wf/cut	0.11326	6.32281	1	3	18.96843
+pair_coeff	8	22	wf/cut	0.15328	5.43639	1	3	16.30917
+pair_coeff	8	23	wf/cut	0.00079	6.4245	1	9	19.27351
+pair_coeff	8	24	wf/cut	0.10707	6.03336	1	3	18.10009
+pair_coeff	8	25	wf/cut	0.00574	6.50836	1	7	19.52508
+pair_coeff	8	26	wf/cut	0.12024	5.72387	1	3	17.17161
+pair_coeff	8	27	wf/cut	0.11999	6.0006	1	3	18.00179
+pair_coeff	8	28	wf/cut	0.12458	6.17767	1	3	18.53301
+pair_coeff	8	29	wf/cut	0.36592	6.45565	1	3	19.36695
+pair_coeff	8	30	wf/cut	0.08937	6.22184	1	4	18.66551
+pair_coeff	8	31	wf/cut	0.09318	6.35587	1	4	19.06761
+pair_coeff	8	32	wf/cut	0.22638	6.22776	1	3	18.68328
+pair_coeff	8	33	wf/cut	0.46672	6.62211	1	3	19.86633
+pair_coeff	8	34	wf/cut	0.34687	6.40361	1	3	19.21083
+pair_coeff	8	35	wf/cut	0.12875	5.79517	1	3	17.38551
+pair_coeff	8	36	wf/cut	0.00671	6.25773	1	7	18.77318
+pair_coeff	8	37	wf/cut	0.22174	6.05051	1	3	18.15153
+pair_coeff	8	38	wf/cut	0.14076	5.99192	1	3	17.97575
+pair_coeff	8	39	wf/cut	0.13418	5.95101	1	3	17.85305
+pair_coeff	8	40	wf/cut	0.08572	6.54968	1	4	19.64903
+pair_coeff	9	9	wf/cut	0.64576	6.73363	1	2	20.20089
+pair_coeff	9	10	wf/cut	0.34469	6.49981	1	3	19.49945
+pair_coeff	9	11	wf/cut	0.34916	6.63385	1	3	19.90155
+pair_coeff	9	12	wf/cut	0.50504	6.50574	1	3	19.51722
+pair_coeff	9	13	wf/cut	0.79291	6.90009	1	2	20.70027
+pair_coeff	9	14	wf/cut	0.6231	6.68159	1	2	20.04477
+pair_coeff	9	15	wf/cut	0.39079	6.07315	1	3	18.21945
+pair_coeff	9	16	wf/cut	0.64243	6.53571	1	2	19.60712
+pair_coeff	9	17	wf/cut	0.49961	6.32849	1	3	18.98547
+pair_coeff	9	18	wf/cut	0.40484	6.26989	1	3	18.80969
+pair_coeff	9	19	wf/cut	0.39714	6.22899	1	3	18.68698
+pair_coeff	9	20	wf/cut	0.34043	6.82766	1	3	20.48297
+pair_coeff	9	21	wf/cut	0.31179	6.60079	1	3	19.80237
+pair_coeff	9	22	wf/cut	0.35097	5.71437	1	3	17.14311
+pair_coeff	9	23	wf/cut	0.14989	6.70248	1	3	20.10745
+pair_coeff	9	24	wf/cut	0.30573	6.31134	1	3	18.93403
+pair_coeff	9	25	wf/cut	0.67285	6.78634	1	2	20.35902
+pair_coeff	9	26	wf/cut	0.31861	6.00185	1	3	18.00555
+pair_coeff	9	27	wf/cut	0.34574	6.27858	1	3	18.83573
+pair_coeff	9	28	wf/cut	0.35159	6.45565	1	3	19.36695
+pair_coeff	9	29	wf/cut	0.54028	6.73363	1	2	20.20089
+pair_coeff	9	30	wf/cut	0.2884	6.49981	1	3	19.49945
+pair_coeff	9	31	wf/cut	0.29213	6.63385	1	3	19.90155
+pair_coeff	9	32	wf/cut	0.42255	6.50574	1	3	19.51722
+pair_coeff	9	33	wf/cut	0.6634	6.90009	1	2	20.70027
+pair_coeff	9	34	wf/cut	0.52132	6.68159	1	2	20.04477
+pair_coeff	9	35	wf/cut	0.32695	6.07315	1	3	18.21945
+pair_coeff	9	36	wf/cut	0.53749	6.53571	1	2	19.60712
+pair_coeff	9	37	wf/cut	0.41801	6.32849	1	3	18.98547
+pair_coeff	9	38	wf/cut	0.33872	6.26989	1	3	18.80969
+pair_coeff	9	39	wf/cut	0.33227	6.22899	1	3	18.68698
+pair_coeff	9	40	wf/cut	0.28482	6.82766	1	3	20.48297
+pair_coeff	10	10	wf/cut	0.01471	6.266	1	6	18.798
+pair_coeff	10	11	wf/cut	0.01943	6.40003	1	6	19.20011
+pair_coeff	10	12	wf/cut	0.18437	6.27192	1	3	18.81577
+pair_coeff	10	13	wf/cut	0.46423	6.66628	1	3	19.99883
+pair_coeff	10	14	wf/cut	0.32203	6.44778	1	3	19.34333
+pair_coeff	10	15	wf/cut	0.06349	5.83934	1	4	17.51801
+pair_coeff	10	16	wf/cut	0.32974	6.30189	1	3	18.90567
+pair_coeff	10	17	wf/cut	0.17863	6.09468	1	3	18.28402
+pair_coeff	10	18	wf/cut	0.07835	6.03608	1	4	18.10824
+pair_coeff	10	19	wf/cut	0.0702	5.99518	1	4	17.98554
+pair_coeff	10	20	wf/cut	0.0102	6.59384	1	7	19.78152
+pair_coeff	10	21	wf/cut	0.03706	6.36698	1	5	19.10093
+pair_coeff	10	22	wf/cut	0.07851	5.48055	1	4	16.44167
+pair_coeff	10	23	wf/cut	0.0328	6.46867	1	5	19.40601
+pair_coeff	10	24	wf/cut	0.03065	6.07753	1	5	18.23259
+pair_coeff	10	25	wf/cut	0.21677	6.55253	1	3	19.65758
+pair_coeff	10	26	wf/cut	0.04428	5.76803	1	4	17.3041
+pair_coeff	10	27	wf/cut	0.08318	6.04476	1	4	18.13428
+pair_coeff	10	28	wf/cut	0.08937	6.22184	1	4	18.66551
+pair_coeff	10	29	wf/cut	0.30011	6.49981	1	3	19.49945
+pair_coeff	10	30	wf/cut	0.01231	6.266	1	6	18.798
+pair_coeff	10	31	wf/cut	0.01626	6.40003	1	6	19.20011
+pair_coeff	10	32	wf/cut	0.15426	6.27192	1	3	18.81577
+pair_coeff	10	33	wf/cut	0.40425	6.66628	1	3	19.99883
+pair_coeff	10	34	wf/cut	0.28036	6.44778	1	3	19.34333
+pair_coeff	10	35	wf/cut	0.05312	5.83934	1	4	17.51801
+pair_coeff	10	36	wf/cut	0.27588	6.30189	1	3	18.90567
+pair_coeff	10	37	wf/cut	0.14945	6.09468	1	3	18.28402
+pair_coeff	10	38	wf/cut	0.06556	6.03608	1	4	18.10824
+pair_coeff	10	39	wf/cut	0.05873	5.99518	1	4	17.98554
+pair_coeff	10	40	wf/cut	0.00853	6.59384	1	7	19.78152
+pair_coeff	11	11	wf/cut	0.02415	6.53407	1	6	19.60221
+pair_coeff	11	12	wf/cut	0.18909	6.40596	1	3	19.21788
+pair_coeff	11	13	wf/cut	0.4687	6.80031	1	3	20.40093
+pair_coeff	11	14	wf/cut	0.32649	6.58181	1	3	19.74543
+pair_coeff	11	15	wf/cut	0.06821	5.97337	1	4	17.92011
+pair_coeff	11	16	wf/cut	0.33446	6.43593	1	3	19.30777
+pair_coeff	11	17	wf/cut	0.18334	6.22871	1	3	18.68613
+pair_coeff	11	18	wf/cut	0.08307	6.17012	1	4	18.51035
+pair_coeff	11	19	wf/cut	0.07492	6.12922	1	4	18.38764
+pair_coeff	11	20	wf/cut	0.01492	6.72788	1	6	20.18362
+pair_coeff	11	21	wf/cut	0.04101	6.50101	1	4	19.50303
+pair_coeff	11	22	wf/cut	0.08247	5.61459	1	4	16.84377
+pair_coeff	11	23	wf/cut	0.03699	6.60271	1	5	19.80812
+pair_coeff	11	24	wf/cut	0.0346	6.21157	1	5	18.6347
+pair_coeff	11	25	wf/cut	0.22058	6.68656	1	3	20.05968
+pair_coeff	11	26	wf/cut	0.04824	5.90207	1	4	17.70621
+pair_coeff	11	27	wf/cut	0.08699	6.1788	1	4	18.53638
+pair_coeff	11	28	wf/cut	0.09318	6.35587	1	4	19.06761
+pair_coeff	11	29	wf/cut	0.30399	6.63385	1	3	19.90155
+pair_coeff	11	30	wf/cut	0.01626	6.40003	1	6	19.20011
+pair_coeff	11	31	wf/cut	0.02021	6.53407	1	6	19.60221
+pair_coeff	11	32	wf/cut	0.1582	6.40596	1	3	19.21788
+pair_coeff	11	33	wf/cut	0.40815	6.80031	1	3	20.40093
+pair_coeff	11	34	wf/cut	0.28425	6.58181	1	3	19.74543
+pair_coeff	11	35	wf/cut	0.05706	5.97337	1	4	17.92011
+pair_coeff	11	36	wf/cut	0.27983	6.43593	1	3	19.30777
+pair_coeff	11	37	wf/cut	0.1534	6.22871	1	3	18.68613
+pair_coeff	11	38	wf/cut	0.0695	6.17012	1	4	18.51035
+pair_coeff	11	39	wf/cut	0.06268	6.12922	1	4	18.38764
+pair_coeff	11	40	wf/cut	0.01248	6.72788	1	6	20.18362
+pair_coeff	12	12	wf/cut	0.35403	6.27785	1	3	18.83355
+pair_coeff	12	13	wf/cut	0.62522	6.6722	1	2	20.0166
+pair_coeff	12	14	wf/cut	0.48238	6.4537	1	3	19.3611
+pair_coeff	12	15	wf/cut	0.23315	5.84526	1	3	17.53578
+pair_coeff	12	16	wf/cut	0.4994	6.30781	1	3	18.92345
+pair_coeff	12	17	wf/cut	0.34828	6.1006	1	3	18.3018
+pair_coeff	12	18	wf/cut	0.24801	6.042	1	3	18.12601
+pair_coeff	12	19	wf/cut	0.23986	6.0011	1	3	18.00332
+pair_coeff	12	20	wf/cut	0.17986	6.59976	1	3	19.7993
+pair_coeff	12	21	wf/cut	0.17901	6.3729	1	3	19.1187
+pair_coeff	12	22	wf/cut	0.22046	5.48648	1	3	16.45944
+pair_coeff	12	23	wf/cut	0.18326	6.47459	1	3	19.42378
+pair_coeff	12	24	wf/cut	0.1726	6.08345	1	3	18.25036
+pair_coeff	12	25	wf/cut	0.3535	6.55845	1	3	19.67535
+pair_coeff	12	26	wf/cut	0.18624	5.77396	1	3	17.32188
+pair_coeff	12	27	wf/cut	0.22019	6.05068	1	3	18.15205
+pair_coeff	12	28	wf/cut	0.22638	6.22776	1	3	18.68328
+pair_coeff	12	29	wf/cut	0.4398	6.50574	1	3	19.51722
+pair_coeff	12	30	wf/cut	0.15426	6.27192	1	3	18.81577
+pair_coeff	12	31	wf/cut	0.1582	6.40596	1	3	19.21788
+pair_coeff	12	32	wf/cut	0.2962	6.27785	1	3	18.83355
+pair_coeff	12	33	wf/cut	0.54449	6.6722	1	2	20.0166
+pair_coeff	12	34	wf/cut	0.42005	6.4537	1	3	19.3611
+pair_coeff	12	35	wf/cut	0.19506	5.84526	1	3	17.53578
+pair_coeff	12	36	wf/cut	0.41783	6.30781	1	3	18.92345
+pair_coeff	12	37	wf/cut	0.2914	6.1006	1	3	18.3018
+pair_coeff	12	38	wf/cut	0.2075	6.042	1	3	18.12601
+pair_coeff	12	39	wf/cut	0.20068	6.0011	1	3	18.00332
+pair_coeff	12	40	wf/cut	0.15048	6.59976	1	3	19.7993
+pair_coeff	13	13	wf/cut	0.80307	7.06655	1	2	21.19965
+pair_coeff	13	14	wf/cut	0.77025	6.84805	1	2	20.54415
+pair_coeff	13	15	wf/cut	0.51051	6.23961	1	3	18.71883
+pair_coeff	13	16	wf/cut	0.76315	6.70217	1	2	20.1065
+pair_coeff	13	17	wf/cut	0.61976	6.49495	1	2	19.48485
+pair_coeff	13	18	wf/cut	0.52462	6.43636	1	3	19.30907
+pair_coeff	13	19	wf/cut	0.51688	6.39546	1	3	19.18637
+pair_coeff	13	20	wf/cut	0.45994	6.99412	1	3	20.98235
+pair_coeff	13	21	wf/cut	0.41189	6.76725	1	3	20.30175
+pair_coeff	13	22	wf/cut	0.45122	5.88083	1	3	17.64249
+pair_coeff	13	23	wf/cut	0.16179	6.86895	1	3	20.60684
+pair_coeff	13	24	wf/cut	0.4058	6.47781	1	3	19.43342
+pair_coeff	13	25	wf/cut	0.78151	6.9528	1	2	20.8584
+pair_coeff	13	26	wf/cut	0.41875	6.16831	1	3	18.50493
+pair_coeff	13	27	wf/cut	0.44253	6.44504	1	3	19.33511
+pair_coeff	13	28	wf/cut	0.44841	6.62211	1	3	19.86633
+pair_coeff	13	29	wf/cut	0.6634	6.90009	1	2	20.70027
+pair_coeff	13	30	wf/cut	0.3884	6.66628	1	3	19.99883
+pair_coeff	13	31	wf/cut	0.39214	6.80031	1	3	20.40093
+pair_coeff	13	32	wf/cut	0.52309	6.6722	1	2	20.0166
+pair_coeff	13	33	wf/cut	0.6719	7.06655	1	2	21.19965
+pair_coeff	13	34	wf/cut	0.64443	6.84805	1	2	20.54415
+pair_coeff	13	35	wf/cut	0.42713	6.23961	1	3	18.71883
+pair_coeff	13	36	wf/cut	0.6385	6.70217	1	2	20.1065
+pair_coeff	13	37	wf/cut	0.51853	6.49495	1	2	19.48485
+pair_coeff	13	38	wf/cut	0.43892	6.43636	1	3	19.30907
+pair_coeff	13	39	wf/cut	0.43246	6.39546	1	3	19.18637
+pair_coeff	13	40	wf/cut	0.38482	6.99412	1	3	20.98235
+pair_coeff	14	14	wf/cut	0.60043	6.62955	1	2	19.88865
+pair_coeff	14	15	wf/cut	0.36813	6.02111	1	3	18.06333
+pair_coeff	14	16	wf/cut	0.61977	6.48367	1	2	19.45099
+pair_coeff	14	17	wf/cut	0.47695	6.27645	1	3	18.82935
+pair_coeff	14	18	wf/cut	0.38218	6.21786	1	3	18.65357
+pair_coeff	14	19	wf/cut	0.37447	6.17695	1	3	18.53086
+pair_coeff	14	20	wf/cut	0.31777	6.77562	1	3	20.32684
+pair_coeff	14	21	wf/cut	0.2934	6.54875	1	3	19.64625
+pair_coeff	14	22	wf/cut	0.332	5.66233	1	3	16.98699
+pair_coeff	14	23	wf/cut	0.16824	6.65044	1	3	19.95134
+pair_coeff	14	24	wf/cut	0.28677	6.2593	1	3	18.77792
+pair_coeff	14	25	wf/cut	0.59989	6.7343	1	2	20.2029
+pair_coeff	14	26	wf/cut	0.29966	5.94981	1	3	17.84943
+pair_coeff	14	27	wf/cut	0.32743	6.22654	1	3	18.67961
+pair_coeff	14	28	wf/cut	0.33329	6.40361	1	3	19.21083
+pair_coeff	14	29	wf/cut	0.52132	6.68159	1	2	20.04477
+pair_coeff	14	30	wf/cut	0.26943	6.44778	1	3	19.34333
+pair_coeff	14	31	wf/cut	0.27316	6.58181	1	3	19.74543
+pair_coeff	14	32	wf/cut	0.40358	6.4537	1	3	19.3611
+pair_coeff	14	33	wf/cut	0.64443	6.84805	1	2	20.54415
+pair_coeff	14	34	wf/cut	0.50235	6.62955	1	2	19.88865
+pair_coeff	14	35	wf/cut	0.308	6.02111	1	3	18.06333
+pair_coeff	14	36	wf/cut	0.51854	6.48367	1	2	19.45099
+pair_coeff	14	37	wf/cut	0.39904	6.27645	1	3	18.82935
+pair_coeff	14	38	wf/cut	0.31976	6.21786	1	3	18.65357
+pair_coeff	14	39	wf/cut	0.31331	6.17695	1	3	18.53086
+pair_coeff	14	40	wf/cut	0.26587	6.77562	1	3	20.32684
+pair_coeff	15	15	wf/cut	0.11226	5.41267	1	4	16.23801
+pair_coeff	15	16	wf/cut	0.37852	5.87523	1	3	17.62568
+pair_coeff	15	17	wf/cut	0.2274	5.66801	1	3	17.00403
+pair_coeff	15	18	wf/cut	0.12713	5.60942	1	3	16.82825
+pair_coeff	15	19	wf/cut	0.11897	5.56851	1	3	16.70555
+pair_coeff	15	20	wf/cut	0.05897	6.16718	1	4	18.50153
+pair_coeff	15	21	wf/cut	0.07787	5.94031	1	4	17.82093
+pair_coeff	15	22	wf/cut	0.11932	5.05389	1	3	15.16167
+pair_coeff	15	23	wf/cut	0.07606	6.042	1	4	18.12601
+pair_coeff	15	24	wf/cut	0.07146	5.65086	1	4	16.95259
+pair_coeff	15	25	wf/cut	0.25608	6.12586	1	3	18.37758
+pair_coeff	15	26	wf/cut	0.0851	5.34137	1	4	16.02411
+pair_coeff	15	27	wf/cut	0.12256	5.6181	1	3	16.85429
+pair_coeff	15	28	wf/cut	0.12875	5.79517	1	3	17.38551
+pair_coeff	15	29	wf/cut	0.34027	6.07315	1	3	18.21945
+pair_coeff	15	30	wf/cut	0.05312	5.83934	1	4	17.51801
+pair_coeff	15	31	wf/cut	0.05706	5.97337	1	4	17.92011
+pair_coeff	15	32	wf/cut	0.19506	5.84526	1	3	17.53578
+pair_coeff	15	33	wf/cut	0.44457	6.23961	1	3	18.71883
+pair_coeff	15	34	wf/cut	0.32052	6.02111	1	3	18.06333
+pair_coeff	15	35	wf/cut	0.09392	5.41267	1	4	16.23801
+pair_coeff	15	36	wf/cut	0.31669	5.87523	1	3	17.62568
+pair_coeff	15	37	wf/cut	0.19026	5.66801	1	3	17.00403
+pair_coeff	15	38	wf/cut	0.10636	5.60942	1	3	16.82825
+pair_coeff	15	39	wf/cut	0.09954	5.56851	1	3	16.70555
+pair_coeff	15	40	wf/cut	0.04934	6.16718	1	4	18.50153
+pair_coeff	16	16	wf/cut	0.05239	6.33778	1	4	19.01334
+pair_coeff	16	17	wf/cut	0.49365	6.13057	1	3	18.3917
+pair_coeff	16	18	wf/cut	0.39338	6.07197	1	3	18.21591
+pair_coeff	16	19	wf/cut	0.38523	6.03107	1	3	18.09321
+pair_coeff	16	20	wf/cut	0.32523	6.62973	1	3	19.88919
+pair_coeff	16	21	wf/cut	0.30064	6.40287	1	3	19.2086
+pair_coeff	16	22	wf/cut	0.34209	5.51645	1	3	16.54933
+pair_coeff	16	23	wf/cut	0.13492	6.50456	1	3	19.51368
+pair_coeff	16	24	wf/cut	0.29423	6.11342	1	3	18.34026
+pair_coeff	16	25	wf/cut	0.17428	6.58842	1	3	19.76525
+pair_coeff	16	26	wf/cut	0.30786	5.80392	1	3	17.41177
+pair_coeff	16	27	wf/cut	0.00666	6.08065	1	7	18.24195
+pair_coeff	16	28	wf/cut	0.00671	6.25773	1	7	18.77318
+pair_coeff	16	29	wf/cut	0.55949	6.53571	1	2	19.60712
+pair_coeff	16	30	wf/cut	0.27588	6.30189	1	3	18.90567
+pair_coeff	16	31	wf/cut	0.27983	6.43593	1	3	19.30777
+pair_coeff	16	32	wf/cut	0.41783	6.30781	1	3	18.92345
+pair_coeff	16	33	wf/cut	0.66465	6.70217	1	2	20.1065
+pair_coeff	16	34	wf/cut	0.53974	6.48367	1	2	19.45099
+pair_coeff	16	35	wf/cut	0.31669	5.87523	1	3	17.62568
+pair_coeff	16	36	wf/cut	0.04383	6.33778	1	4	19.01334
+pair_coeff	16	37	wf/cut	0.41302	6.13057	1	3	18.3917
+pair_coeff	16	38	wf/cut	0.32913	6.07197	1	3	18.21591
+pair_coeff	16	39	wf/cut	0.32231	6.03107	1	3	18.09321
+pair_coeff	16	40	wf/cut	0.27211	6.62973	1	3	19.88919
+pair_coeff	17	17	wf/cut	0.34254	5.92335	1	3	17.77005
+pair_coeff	17	18	wf/cut	0.24227	5.86476	1	3	17.59427
+pair_coeff	17	19	wf/cut	0.23412	5.82386	1	3	17.47156
+pair_coeff	17	20	wf/cut	0.17411	6.42252	1	3	19.26755
+pair_coeff	17	21	wf/cut	0.1742	6.19565	1	3	18.58695
+pair_coeff	17	22	wf/cut	0.21566	5.30923	1	3	15.92769
+pair_coeff	17	23	wf/cut	0.17817	6.29734	1	3	18.89203
+pair_coeff	17	24	wf/cut	0.16779	5.9062	1	3	17.71861
+pair_coeff	17	25	wf/cut	0.34888	6.3812	1	3	19.1436
+pair_coeff	17	26	wf/cut	0.18144	5.59671	1	3	16.79013
+pair_coeff	17	27	wf/cut	0.21554	5.87344	1	3	17.62031
+pair_coeff	17	28	wf/cut	0.22174	6.05051	1	3	18.15153
+pair_coeff	17	29	wf/cut	0.43508	6.32849	1	3	18.98547
+pair_coeff	17	30	wf/cut	0.14945	6.09468	1	3	18.28402
+pair_coeff	17	31	wf/cut	0.1534	6.22871	1	3	18.68613
+pair_coeff	17	32	wf/cut	0.2914	6.1006	1	3	18.3018
+pair_coeff	17	33	wf/cut	0.53974	6.49495	1	2	19.48485
+pair_coeff	17	34	wf/cut	0.41533	6.27645	1	3	18.82935
+pair_coeff	17	35	wf/cut	0.19026	5.66801	1	3	17.00403
+pair_coeff	17	36	wf/cut	0.41302	6.13057	1	3	18.3917
+pair_coeff	17	37	wf/cut	0.28659	5.92335	1	3	17.77005
+pair_coeff	17	38	wf/cut	0.2027	5.86476	1	3	17.59427
+pair_coeff	17	39	wf/cut	0.19587	5.82386	1	3	17.47156
+pair_coeff	17	40	wf/cut	0.14567	6.42252	1	3	19.26755
+pair_coeff	18	18	wf/cut	0.142	5.80616	1	3	17.41848
+pair_coeff	18	19	wf/cut	0.13384	5.76526	1	3	17.29578
+pair_coeff	18	20	wf/cut	0.07384	6.36392	1	4	19.09176
+pair_coeff	18	21	wf/cut	0.09031	6.13706	1	4	18.41117
+pair_coeff	18	22	wf/cut	0.13176	5.25063	1	3	15.75191
+pair_coeff	18	23	wf/cut	0.08925	6.23875	1	4	18.71625
+pair_coeff	18	24	wf/cut	0.08389	5.84761	1	4	17.54283
+pair_coeff	18	25	wf/cut	0.26807	6.32261	1	3	18.96782
+pair_coeff	18	26	wf/cut	0.09753	5.53811	1	3	16.61435
+pair_coeff	18	27	wf/cut	0.13457	5.81484	1	3	17.44452
+pair_coeff	18	28	wf/cut	0.14076	5.99192	1	3	17.97575
+pair_coeff	18	29	wf/cut	0.35251	6.26989	1	3	18.80969
+pair_coeff	18	30	wf/cut	0.06556	6.03608	1	4	18.10824
+pair_coeff	18	31	wf/cut	0.0695	6.17012	1	4	18.51035
+pair_coeff	18	32	wf/cut	0.2075	6.042	1	3	18.12601
+pair_coeff	18	33	wf/cut	0.45685	6.43636	1	3	19.30907
+pair_coeff	18	34	wf/cut	0.33276	6.21786	1	3	18.65357
+pair_coeff	18	35	wf/cut	0.10636	5.60942	1	3	16.82825
+pair_coeff	18	36	wf/cut	0.32913	6.07197	1	3	18.21591
+pair_coeff	18	37	wf/cut	0.2027	5.86476	1	3	17.59427
+pair_coeff	18	38	wf/cut	0.11881	5.80616	1	3	17.41848
+pair_coeff	18	39	wf/cut	0.11198	5.76526	1	3	17.29578
+pair_coeff	18	40	wf/cut	0.06178	6.36392	1	4	19.09176
+pair_coeff	19	19	wf/cut	0.12569	5.72436	1	3	17.17308
+pair_coeff	19	20	wf/cut	0.06569	6.32302	1	4	18.96906
+pair_coeff	19	21	wf/cut	0.08349	6.09615	1	4	18.28846
+pair_coeff	19	22	wf/cut	0.12494	5.20974	1	3	15.62921
+pair_coeff	19	23	wf/cut	0.08202	6.19785	1	4	18.59355
+pair_coeff	19	24	wf/cut	0.07708	5.80671	1	4	17.42013
+pair_coeff	19	25	wf/cut	0.26149	6.28171	1	3	18.84511
+pair_coeff	19	26	wf/cut	0.09072	5.49721	1	4	16.49164
+pair_coeff	19	27	wf/cut	0.12799	5.77394	1	3	17.32182
+pair_coeff	19	28	wf/cut	0.13418	5.95101	1	3	17.85305
+pair_coeff	19	29	wf/cut	0.34579	6.22899	1	3	18.68698
+pair_coeff	19	30	wf/cut	0.05873	5.99518	1	4	17.98554
+pair_coeff	19	31	wf/cut	0.06268	6.12922	1	4	18.38764
+pair_coeff	19	32	wf/cut	0.20068	6.0011	1	3	18.00332
+pair_coeff	19	33	wf/cut	0.45011	6.39546	1	3	19.18637
+pair_coeff	19	34	wf/cut	0.32606	6.17695	1	3	18.53086
+pair_coeff	19	35	wf/cut	0.09954	5.56851	1	3	16.70555
+pair_coeff	19	36	wf/cut	0.32231	6.03107	1	3	18.09321
+pair_coeff	19	37	wf/cut	0.19587	5.82386	1	3	17.47156
+pair_coeff	19	38	wf/cut	0.11198	5.76526	1	3	17.29578
+pair_coeff	19	39	wf/cut	0.10516	5.72436	1	3	17.17308
+pair_coeff	19	40	wf/cut	0.05496	6.32302	1	4	18.96906
+pair_coeff	20	20	wf/cut	0.00569	6.92168	1	12	20.76504
+pair_coeff	20	21	wf/cut	0.03329	6.69482	1	5	20.08445
+pair_coeff	20	22	wf/cut	0.07474	5.80839	1	4	17.42518
+pair_coeff	20	23	wf/cut	0.02881	6.79651	1	5	20.38953
+pair_coeff	20	24	wf/cut	0.02688	6.40537	1	5	19.21611
+pair_coeff	20	25	wf/cut	0.21313	6.88037	1	3	20.64109
+pair_coeff	20	26	wf/cut	0.04052	6.09587	1	4	18.28762
+pair_coeff	20	27	wf/cut	0.07953	6.3726	1	4	19.1178
+pair_coeff	20	28	wf/cut	0.08572	6.54968	1	4	19.64903
+pair_coeff	20	29	wf/cut	0.29639	6.82766	1	3	20.48297
+pair_coeff	20	30	wf/cut	0.00853	6.59384	1	7	19.78152
+pair_coeff	20	31	wf/cut	0.01248	6.72788	1	6	20.18362
+pair_coeff	20	32	wf/cut	0.15048	6.59976	1	3	19.7993
+pair_coeff	20	33	wf/cut	0.40051	6.99412	1	3	20.98235
+pair_coeff	20	34	wf/cut	0.27665	6.77562	1	3	20.32684
+pair_coeff	20	35	wf/cut	0.04934	6.16718	1	4	18.50153
+pair_coeff	20	36	wf/cut	0.27211	6.62973	1	3	19.88919
+pair_coeff	20	37	wf/cut	0.14567	6.42252	1	3	19.26755
+pair_coeff	20	38	wf/cut	0.06178	6.36392	1	4	19.09176
+pair_coeff	20	39	wf/cut	0.05496	6.32302	1	4	18.96906
+pair_coeff	20	40	wf/cut	0.00476	6.92168	1	12	20.76504
+pair_coeff	21	21	wf/cut	0.05172	6.46795	1	4	19.40385
+pair_coeff	21	22	wf/cut	0.0864	5.58153	1	3	16.74459
+pair_coeff	21	23	wf/cut	0.0494	6.56964	1	4	19.70893
+pair_coeff	21	24	wf/cut	0.04636	6.1785	1	4	18.53551
+pair_coeff	21	25	wf/cut	0.20132	6.6535	1	3	19.9605
+pair_coeff	21	26	wf/cut	0.05777	5.86901	1	4	17.60703
+pair_coeff	21	27	wf/cut	0.08958	6.14574	1	3	18.4372
+pair_coeff	21	28	wf/cut	0.09476	6.32281	1	3	18.96843
+pair_coeff	21	29	wf/cut	0.27148	6.60079	1	3	19.80237
+pair_coeff	21	30	wf/cut	0.03101	6.36698	1	5	19.10093
+pair_coeff	21	31	wf/cut	0.03431	6.50101	1	4	19.50303
+pair_coeff	21	32	wf/cut	0.14977	6.3729	1	3	19.1187
+pair_coeff	21	33	wf/cut	0.35868	6.76725	1	3	20.30175
+pair_coeff	21	34	wf/cut	0.25546	6.54875	1	3	19.64625
+pair_coeff	21	35	wf/cut	0.06515	5.94031	1	4	17.82093
+pair_coeff	21	36	wf/cut	0.25153	6.40287	1	3	19.2086
+pair_coeff	21	37	wf/cut	0.14575	6.19565	1	3	18.58695
+pair_coeff	21	38	wf/cut	0.07556	6.13706	1	4	18.41117
+pair_coeff	21	39	wf/cut	0.06985	6.09615	1	4	18.28846
+pair_coeff	21	40	wf/cut	0.02785	6.69482	1	5	20.08445
+pair_coeff	22	22	wf/cut	0.12108	4.69511	1	3	14.08533
+pair_coeff	22	23	wf/cut	0.08616	5.68323	1	4	17.04968
+pair_coeff	22	24	wf/cut	0.08104	5.29209	1	3	15.87626
+pair_coeff	22	25	wf/cut	0.23472	5.76708	1	3	17.30124
+pair_coeff	22	26	wf/cut	0.09245	4.98259	1	3	14.94777
+pair_coeff	22	27	wf/cut	0.12306	5.25931	1	3	15.77794
+pair_coeff	22	28	wf/cut	0.12824	5.43639	1	3	16.30917
+pair_coeff	22	29	wf/cut	0.3056	5.71437	1	3	17.14311
+pair_coeff	22	30	wf/cut	0.06569	5.48055	1	4	16.44167
+pair_coeff	22	31	wf/cut	0.069	5.61459	1	4	16.84377
+pair_coeff	22	32	wf/cut	0.18445	5.48648	1	3	16.45944
+pair_coeff	22	33	wf/cut	0.39295	5.88083	1	3	17.64249
+pair_coeff	22	34	wf/cut	0.28908	5.66233	1	3	16.98699
+pair_coeff	22	35	wf/cut	0.09983	5.05389	1	3	15.16167
+pair_coeff	22	36	wf/cut	0.28621	5.51645	1	3	16.54933
+pair_coeff	22	37	wf/cut	0.18043	5.30923	1	3	15.92769
+pair_coeff	22	38	wf/cut	0.11024	5.25063	1	3	15.75191
+pair_coeff	22	39	wf/cut	0.10453	5.20974	1	3	15.62921
+pair_coeff	22	40	wf/cut	0.06253	5.80839	1	4	17.42518
+pair_coeff	23	23	wf/cut	0.03187	6.67134	1	5	20.01402
+pair_coeff	23	24	wf/cut	0.04721	6.2802	1	4	18.8406
+pair_coeff	23	25	wf/cut	0.1517	6.7552	1	3	20.26559
+pair_coeff	23	26	wf/cut	0.05931	5.9707	1	4	17.91212
+pair_coeff	23	27	wf/cut	0.00061	6.24743	1	9	18.74229
+pair_coeff	23	28	wf/cut	0.00066	6.4245	1	9	19.27351
+pair_coeff	23	29	wf/cut	0.13408	6.70248	1	3	20.10745
+pair_coeff	23	30	wf/cut	0.03094	6.46867	1	5	19.40601
+pair_coeff	23	31	wf/cut	0.03445	6.60271	1	5	19.80812
+pair_coeff	23	32	wf/cut	0.15683	6.47459	1	3	19.42378
+pair_coeff	23	33	wf/cut	0.14445	6.86895	1	3	20.60684
+pair_coeff	23	34	wf/cut	0.15007	6.65044	1	3	19.95134
+pair_coeff	23	35	wf/cut	0.06714	6.042	1	4	18.12601
+pair_coeff	23	36	wf/cut	0.11638	6.50456	1	3	19.51368
+pair_coeff	23	37	wf/cut	0.15257	6.29734	1	3	18.89203
+pair_coeff	23	38	wf/cut	0.07817	6.23875	1	4	18.71625
+pair_coeff	23	39	wf/cut	0.07212	6.19785	1	4	18.59355
+pair_coeff	23	40	wf/cut	0.0276	6.79651	1	5	20.38953
+pair_coeff	24	24	wf/cut	0.04099	5.88906	1	4	17.66718
+pair_coeff	24	25	wf/cut	0.19615	6.36406	1	3	19.09217
+pair_coeff	24	26	wf/cut	0.0524	5.57956	1	4	16.73869
+pair_coeff	24	27	wf/cut	0.0844	5.85629	1	3	17.56887
+pair_coeff	24	28	wf/cut	0.08958	6.03336	1	3	18.10009
+pair_coeff	24	29	wf/cut	0.26619	6.31134	1	3	18.93403
+pair_coeff	24	30	wf/cut	0.02564	6.07753	1	5	18.23259
+pair_coeff	24	31	wf/cut	0.02895	6.21157	1	5	18.6347
+pair_coeff	24	32	wf/cut	0.14441	6.08345	1	3	18.25036
+pair_coeff	24	33	wf/cut	0.35338	6.47781	1	3	19.43342
+pair_coeff	24	34	wf/cut	0.24967	6.2593	1	3	18.77792
+pair_coeff	24	35	wf/cut	0.05979	5.65086	1	4	16.95259
+pair_coeff	24	36	wf/cut	0.24617	6.11342	1	3	18.34026
+pair_coeff	24	37	wf/cut	0.14038	5.9062	1	3	17.71861
+pair_coeff	24	38	wf/cut	0.07019	5.84761	1	4	17.54283
+pair_coeff	24	39	wf/cut	0.06449	5.80671	1	4	17.42013
+pair_coeff	24	40	wf/cut	0.02249	6.40537	1	5	19.21611
+pair_coeff	25	25	wf/cut	0.10551	6.83905	1	3	20.51715
+pair_coeff	25	26	wf/cut	0.20714	6.05456	1	3	18.16368
+pair_coeff	25	27	wf/cut	0.00472	6.33129	1	7	18.99385
+pair_coeff	25	28	wf/cut	0.0048	6.50836	1	7	19.52508
+pair_coeff	25	29	wf/cut	0.58602	6.78634	1	2	20.35902
+pair_coeff	25	30	wf/cut	0.18136	6.55253	1	3	19.65758
+pair_coeff	25	31	wf/cut	0.18455	6.68656	1	3	20.05968
+pair_coeff	25	32	wf/cut	0.29576	6.55845	1	3	19.67535
+pair_coeff	25	33	wf/cut	0.68068	6.9528	1	2	20.8584
+pair_coeff	25	34	wf/cut	0.52245	6.7343	1	2	20.2029
+pair_coeff	25	35	wf/cut	0.21425	6.12586	1	3	18.37758
+pair_coeff	25	36	wf/cut	0.14581	6.58842	1	3	19.76525
+pair_coeff	25	37	wf/cut	0.29189	6.3812	1	3	19.1436
+pair_coeff	25	38	wf/cut	0.22428	6.32261	1	3	18.96782
+pair_coeff	25	39	wf/cut	0.21878	6.28171	1	3	18.84511
+pair_coeff	25	40	wf/cut	0.17832	6.88037	1	3	20.64109
+pair_coeff	26	26	wf/cut	0.06381	5.27007	1	4	15.81021
+pair_coeff	26	27	wf/cut	0.09541	5.54679	1	3	16.64038
+pair_coeff	26	28	wf/cut	0.1006	5.72387	1	3	17.17161
+pair_coeff	26	29	wf/cut	0.27742	6.00185	1	3	18.00555
+pair_coeff	26	30	wf/cut	0.03705	5.76803	1	4	17.3041
+pair_coeff	26	31	wf/cut	0.04036	5.90207	1	4	17.70621
+pair_coeff	26	32	wf/cut	0.15582	5.77396	1	3	17.32188
+pair_coeff	26	33	wf/cut	0.36465	6.16831	1	3	18.50493
+pair_coeff	26	34	wf/cut	0.2609	5.94981	1	3	17.84943
+pair_coeff	26	35	wf/cut	0.0712	5.34137	1	4	16.02411
+pair_coeff	26	36	wf/cut	0.25757	5.80392	1	3	17.41177
+pair_coeff	26	37	wf/cut	0.1518	5.59671	1	3	16.79013
+pair_coeff	26	38	wf/cut	0.0816	5.53811	1	3	16.61435
+pair_coeff	26	39	wf/cut	0.0759	5.49721	1	4	16.49164
+pair_coeff	26	40	wf/cut	0.0339	6.09587	1	4	18.28762
+pair_coeff	27	27	wf/cut	0.09655	5.82352	1	3	17.47056
+pair_coeff	27	28	wf/cut	0.10039	6.0006	1	3	18.00179
+pair_coeff	27	29	wf/cut	0.30105	6.27858	1	3	18.83573
+pair_coeff	27	30	wf/cut	0.06959	6.04476	1	4	18.13428
+pair_coeff	27	31	wf/cut	0.07278	6.1788	1	4	18.53638
+pair_coeff	27	32	wf/cut	0.18422	6.05068	1	3	18.15205
+pair_coeff	27	33	wf/cut	0.38537	6.44504	1	3	19.33511
+pair_coeff	27	34	wf/cut	0.28511	6.22654	1	3	18.67961
+pair_coeff	27	35	wf/cut	0.10254	5.6181	1	3	16.85429
+pair_coeff	27	36	wf/cut	0.00557	6.08065	1	7	18.24195
+pair_coeff	27	37	wf/cut	0.18033	5.87344	1	3	17.62031
+pair_coeff	27	38	wf/cut	0.11259	5.81484	1	3	17.44452
+pair_coeff	27	39	wf/cut	0.10708	5.77394	1	3	17.32182
+pair_coeff	27	40	wf/cut	0.06654	6.3726	1	4	19.1178
+pair_coeff	28	28	wf/cut	0.10423	6.17767	1	3	18.53301
+pair_coeff	28	29	wf/cut	0.30615	6.45565	1	3	19.36695
+pair_coeff	28	30	wf/cut	0.07477	6.22184	1	4	18.66551
+pair_coeff	28	31	wf/cut	0.07796	6.35587	1	4	19.06761
+pair_coeff	28	32	wf/cut	0.1894	6.22776	1	3	18.68328
+pair_coeff	28	33	wf/cut	0.39049	6.62211	1	3	19.86633
+pair_coeff	28	34	wf/cut	0.29021	6.40361	1	3	19.21083
+pair_coeff	28	35	wf/cut	0.10772	5.79517	1	3	17.38551
+pair_coeff	28	36	wf/cut	0.00561	6.25773	1	7	18.77318
+pair_coeff	28	37	wf/cut	0.18552	6.05051	1	3	18.15153
+pair_coeff	28	38	wf/cut	0.11777	5.99192	1	3	17.97575
+pair_coeff	28	39	wf/cut	0.11226	5.95101	1	3	17.85305
+pair_coeff	28	40	wf/cut	0.07172	6.54968	1	4	19.64903
+pair_coeff	29	29	wf/cut	0.47053	6.73363	1	2	20.20089
+pair_coeff	29	30	wf/cut	0.25109	6.49981	1	3	19.49945
+pair_coeff	29	31	wf/cut	0.25434	6.63385	1	3	19.90155
+pair_coeff	29	32	wf/cut	0.36796	6.50574	1	3	19.51722
+pair_coeff	29	33	wf/cut	0.57778	6.90009	1	2	20.70027
+pair_coeff	29	34	wf/cut	0.45401	6.68159	1	2	20.04477
+pair_coeff	29	35	wf/cut	0.28469	6.07315	1	3	18.21945
+pair_coeff	29	36	wf/cut	0.4681	6.53571	1	2	19.60712
+pair_coeff	29	37	wf/cut	0.36401	6.32849	1	3	18.98547
+pair_coeff	29	38	wf/cut	0.29493	6.26989	1	3	18.80969
+pair_coeff	29	39	wf/cut	0.28931	6.22899	1	3	18.68698
+pair_coeff	29	40	wf/cut	0.24798	6.82766	1	3	20.48297
+pair_coeff	30	30	wf/cut	0.0103	6.266	1	6	18.798
+pair_coeff	30	31	wf/cut	0.0136	6.40003	1	6	19.20011
+pair_coeff	30	32	wf/cut	0.12906	6.27192	1	3	18.81577
+pair_coeff	30	33	wf/cut	0.33822	6.66628	1	3	19.99883
+pair_coeff	30	34	wf/cut	0.23457	6.44778	1	3	19.34333
+pair_coeff	30	35	wf/cut	0.04444	5.83934	1	4	17.51801
+pair_coeff	30	36	wf/cut	0.23082	6.30189	1	3	18.90567
+pair_coeff	30	37	wf/cut	0.12504	6.09468	1	3	18.28402
+pair_coeff	30	38	wf/cut	0.05485	6.03608	1	4	18.10824
+pair_coeff	30	39	wf/cut	0.04914	5.99518	1	4	17.98554
+pair_coeff	30	40	wf/cut	0.00714	6.59384	1	7	19.78152
+pair_coeff	31	31	wf/cut	0.01691	6.53407	1	6	19.60221
+pair_coeff	31	32	wf/cut	0.13236	6.40596	1	3	19.21788
+pair_coeff	31	33	wf/cut	0.34148	6.80031	1	3	20.40093
+pair_coeff	31	34	wf/cut	0.23782	6.58181	1	3	19.74543
+pair_coeff	31	35	wf/cut	0.04774	5.97337	1	4	17.92011
+pair_coeff	31	36	wf/cut	0.23412	6.43593	1	3	19.30777
+pair_coeff	31	37	wf/cut	0.12834	6.22871	1	3	18.68613
+pair_coeff	31	38	wf/cut	0.05815	6.17012	1	4	18.51035
+pair_coeff	31	39	wf/cut	0.05244	6.12922	1	4	18.38764
+pair_coeff	31	40	wf/cut	0.01044	6.72788	1	6	20.18362
+pair_coeff	32	32	wf/cut	0.24782	6.27785	1	3	18.83355
+pair_coeff	32	33	wf/cut	0.45555	6.6722	1	2	20.0166
+pair_coeff	32	34	wf/cut	0.35144	6.4537	1	3	19.3611
+pair_coeff	32	35	wf/cut	0.1632	5.84526	1	3	17.53578
+pair_coeff	32	36	wf/cut	0.34958	6.30781	1	3	18.92345
+pair_coeff	32	37	wf/cut	0.2438	6.1006	1	3	18.3018
+pair_coeff	32	38	wf/cut	0.17361	6.042	1	3	18.12601
+pair_coeff	32	39	wf/cut	0.1679	6.0011	1	3	18.00332
+pair_coeff	32	40	wf/cut	0.1259	6.59976	1	3	19.7993
+pair_coeff	33	33	wf/cut	0.58519	7.06655	1	2	21.19965
+pair_coeff	33	34	wf/cut	0.56126	6.84805	1	2	20.54415
+pair_coeff	33	35	wf/cut	0.37195	6.23961	1	3	18.71883
+pair_coeff	33	36	wf/cut	0.55609	6.70217	1	2	20.1065
+pair_coeff	33	37	wf/cut	0.45158	6.49495	1	2	19.48485
+pair_coeff	33	38	wf/cut	0.38223	6.43636	1	3	19.30907
+pair_coeff	33	39	wf/cut	0.37659	6.39546	1	3	19.18637
+pair_coeff	33	40	wf/cut	0.33509	6.99412	1	3	20.98235
+pair_coeff	34	34	wf/cut	0.43749	6.62955	1	2	19.88865
+pair_coeff	34	35	wf/cut	0.26817	6.02111	1	3	18.06333
+pair_coeff	34	36	wf/cut	0.45158	6.48367	1	2	19.45099
+pair_coeff	34	37	wf/cut	0.34749	6.27645	1	3	18.82935
+pair_coeff	34	38	wf/cut	0.27841	6.21786	1	3	18.65357
+pair_coeff	34	39	wf/cut	0.2728	6.17695	1	3	18.53086
+pair_coeff	34	40	wf/cut	0.23146	6.77562	1	3	20.32684
+pair_coeff	35	35	wf/cut	0.07858	5.41267	1	4	16.23801
+pair_coeff	35	36	wf/cut	0.26496	5.87523	1	3	17.62568
+pair_coeff	35	37	wf/cut	0.15918	5.66801	1	3	17.00403
+pair_coeff	35	38	wf/cut	0.08899	5.60942	1	3	16.82825
+pair_coeff	35	39	wf/cut	0.08328	5.56851	1	3	16.70555
+pair_coeff	35	40	wf/cut	0.04128	6.16718	1	4	18.50153
+pair_coeff	36	36	wf/cut	0.03667	6.33778	1	4	19.01334
+pair_coeff	36	37	wf/cut	0.34556	6.13057	1	3	18.3917
+pair_coeff	36	38	wf/cut	0.27537	6.07197	1	3	18.21591
+pair_coeff	36	39	wf/cut	0.26966	6.03107	1	3	18.09321
+pair_coeff	36	40	wf/cut	0.22766	6.62973	1	3	19.88919
+pair_coeff	37	37	wf/cut	0.23978	5.92335	1	3	17.77005
+pair_coeff	37	38	wf/cut	0.16959	5.86476	1	3	17.59427
+pair_coeff	37	39	wf/cut	0.16388	5.82386	1	3	17.47156
+pair_coeff	37	40	wf/cut	0.12188	6.42252	1	3	19.26755
+pair_coeff	38	38	wf/cut	0.0994	5.80616	1	3	17.41848
+pair_coeff	38	39	wf/cut	0.09369	5.76526	1	3	17.29578
+pair_coeff	38	40	wf/cut	0.05169	6.36392	1	4	19.09176
+pair_coeff	39	39	wf/cut	0.08798	5.72436	1	3	17.17308
+pair_coeff	39	40	wf/cut	0.04598	6.32302	1	4	18.96906
+pair_coeff	40	40	wf/cut	0.00398	6.92168	1	12	20.76504
+pair_coeff 3 3 yukawa 4.00000 35.
+pair_coeff 3 5 yukawa 4.00000 35.
+pair_coeff 3 7 yukawa -4.33758599996 35.
+pair_coeff 3 8 yukawa -4.33758599996 35.
+pair_coeff 3 16 yukawa 1.47872249999 35.
+pair_coeff 3 23 yukawa 4.00000 35.
+pair_coeff 3 25 yukawa 4.00000 35.
+pair_coeff 3 36 yukawa 1.55655 35.
+pair_coeff 5 5 yukawa 4.00000 35.
+pair_coeff 5 7 yukawa -4.92907499995 35.
+pair_coeff 5 8 yukawa -4.92907499995 35.
+pair_coeff 5 16 yukawa 1.47872249999 35.
+pair_coeff 5 23 yukawa 4.00000 35.
+pair_coeff 5 25 yukawa 4.00000 35.
+pair_coeff 5 27 yukawa -4.92907499995 35.
+pair_coeff 5 28 yukawa -4.92907499995 35.
+pair_coeff 5 36 yukawa 1.55655 35.
+pair_coeff 7 7 yukawa 4.00000 35.
+pair_coeff 7 8 yukawa 4.00000 35.
+pair_coeff 7 16 yukawa  -2.46453749998 35.
+pair_coeff 7 23 yukawa -4.33758599996 35.
+pair_coeff 7 25 yukawa -4.92907499995 35.
+pair_coeff 7 27 yukawa 4.00000 35.
+pair_coeff 7 28 yukawa 4.00000 35.
+pair_coeff 7 36 yukawa  -2.46453749998 35.
+pair_coeff 8 8 yukawa 4.00000 35.
+pair_coeff 8 16 yukawa 1.47872249999 35.
+pair_coeff 8 23 yukawa -4.33758599996 35.
+pair_coeff 8 25 yukawa -4.92907499995 35.
+pair_coeff 8 27 yukawa 4.00000 35.
+pair_coeff 8 28 yukawa 4.00000 35.
+pair_coeff 8 36 yukawa  -2.46453749998 35.
+pair_coeff 16 16 yukawa 1.0377 35.
+pair_coeff 16 23 yukawa 1.55655 35.
+pair_coeff 16 25 yukawa 1.55655 35.
+pair_coeff 16 27 yukawa  -2.46453749998 35.
+pair_coeff 16 28 yukawa  -2.46453749998 35.
+pair_coeff 16 36 yukawa 1.0377 35.
+pair_coeff 23 23 yukawa 4.00000 35.
+pair_coeff 23 25 yukawa 4.00000 35.
+pair_coeff 23 36 yukawa 1.55655 35.
+pair_coeff 25 25 yukawa 4.00000 35.
+pair_coeff 25 27 yukawa -4.92907499995 35.
+pair_coeff 25 28 yukawa -4.92907499995 35.
+pair_coeff 25 36 yukawa 1.47872249999 35.
+pair_coeff 27 27 yukawa 4.00000 35.
+pair_coeff 27 28 yukawa 4.00000 35.
+pair_coeff 27 36 yukawa  -2.46453749998 35.
+pair_coeff 28 28 yukawa 4.00000 35.
+pair_coeff 28 36 yukawa  -2.46453749998 35.
+pair_coeff 36 36 yukawa 1.0377 35.
+pair_coeff 3 27 yukawa -4.33758599996 35.
+pair_coeff 3 28 yukawa -4.33758599996 35.
+pair_coeff 23 27 yukawa -4.33758599996 35.
+pair_coeff 23 28 yukawa -4.33758599996 35.
+
+
+group     CD1 id 2:38 416:452 830:866 1244:1280 1658:1694 2072:2108 2486:2522 2900:2936 3314:3350 3728:3764 4142:4178 4556:4592 4970:5006 5384:5420 5798:5834 6212:6248 6626:6662 7040:7076 7454:7490 7868:7904 8282:8318 8696:8732 9110:9146 9524:9560 9938:9974 10352:10388 10766:10802 11180:11216 11594:11630 12008:12044 12422:12458 12836:12872 13250:13286 13664:13700 14078:14114 14492:14528 14906:14942 15320:15356 15734:15770 16148:16184 
+
+group     CD2 id 40:49 454:463 868:877 1282:1291 1696:1705 2110:2119 2524:2533 2938:2947 3352:3361 3766:3775 4180:4189 4594:4603 5008:5017 5422:5431 5836:5845 6250:6259 6664:6673 7078:7087 7492:7501 7906:7915 8320:8329 8734:8743 9148:9157 9562:9571 9976:9985 10390:10399 10804:10813 11218:11227 11632:11641 12046:12055 12460:12469 12874:12883 13288:13297 13702:13711 14116:14125 14530:14539 14944:14953 15358:15367 15772:15781 16186:16195 
+
+group     CD3 id 51:79 465:493 879:907 1293:1321 1707:1735 2121:2149 2535:2563 2949:2977 3363:3391 3777:3805 4191:4219 4605:4633 5019:5047 5433:5461 5847:5875 6261:6289 6675:6703 7089:7117 7503:7531 7917:7945 8331:8359 8745:8773 9159:9187 9573:9601 9987:10015 10401:10429 10815:10843 11229:11257 11643:11671 12057:12085 12471:12499 12885:12913 13299:13327 13713:13741 14127:14155 14541:14569 14955:14983 15369:15397 15783:15811 16197:16225 
+
+group     CD4 id 193:267 607:681 1021:1095 1435:1509 1849:1923 2263:2337 2677:2751 3091:3165 3505:3579 3919:3993 4333:4407 4747:4821 5161:5235 5575:5649 5989:6063 6403:6477 6817:6891 7231:7305 7645:7719 8059:8133 8473:8547 8887:8961 9301:9375 9715:9789 10129:10203 10543:10617 10957:11031 11371:11445 11785:11859 12199:12273 12613:12687 13027:13101 13441:13515 13855:13929 14269:14343 14683:14757 15097:15171 15511:15585 15925:15999 16339:16413 
+
+group     CD5 id 307:349 721:763 1135:1177 1549:1591 1963:2005 2377:2419 2791:2833 3205:3247 3619:3661 4033:4075 4447:4489 4861:4903 5275:5317 5689:5731 6103:6145 6517:6559 6931:6973 7345:7387 7759:7801 8173:8215 8587:8629 9001:9043 9415:9457 9829:9871 10243:10285 10657:10699 11071:11113 11485:11527 11899:11941 12313:12355 12727:12769 13141:13183 13555:13597 13969:14011 14383:14425 14797:14839 15211:15253 15625:15667 16039:16081 16453:16495 
+
+group     nonrigid subtract all CD1 CD2 CD3 CD4 CD5
+
+special_bonds fene
+neighbor  3.5 multi
+neigh_modify  exclude molecule/intra CD1
+neigh_modify  exclude molecule/intra CD2
+neigh_modify  exclude molecule/intra CD3
+neigh_modify  exclude molecule/intra CD4
+neigh_modify  exclude molecule/intra CD5
+neigh_modify  every 10 delay 0
+
+comm_style    tiled
+timestep      10
+
+#velocity      all create ${T} 494211
+
+fix           fxnve   nonrigid   nve
+fix           fxnverigid1 CD1 rigid/nvt molecule temp ${T} ${T} 5000.0
+fix           fxnverigid2 CD2 rigid/nvt molecule temp ${T} ${T} 5000.0 
+fix           fxnverigid3 CD3 rigid/nvt molecule temp ${T} ${T} 5000.0 
+fix           fxnverigid4 CD4 rigid/nvt molecule temp ${T} ${T} 5000.0 
+fix           fxnverigid5 CD5 rigid/nvt molecule temp ${T} ${T} 5000.0 
+fix           fxlange nonrigid  langevin ${T} ${T} 5000.0 32784
+
+fix           fixcentro all recenter INIT INIT INIT
+fix           fxbal  all balance 1000 1.05 rcb
+
+
+########   COMPUTE RESULTS  #######
+## Radius
+compute k all gyration
+compute cc1 all chunk/atom molecule
+compute radio all gyration/chunk cc1
+variable media_radio equal ave(c_radio)
+fix ex all print 100000 "${media_radio}" file gyration.out screen no
+fix radio  all ave/time 100000 1 100000 c_radio file radio.out mode vector
+
+### Density profile
+compute densidad all chunk/atom bin/1d z lower 1
+fix 3 all ave/chunk 200000 1 200000 densidad density/mass file density.profile
+#######################################
+
+
+dump        1 all custom 500000 result.lammpstrj id mol type q xu yu zu
+dump_modify   1 sort id
+
+thermo        1000
+thermo_style  custom step pe ebond ecoul epair press ke temp lx ly lz pxx pyy pzz  spcpu density 
+thermo_modify flush yes
+
+restart       1000000 restart1.tmp restart2.tmp
+#run    20000
+run           50000000
+
