@@ -1,0 +1,22 @@
+Res  X  ID  SIGMA CHARGE TYPE
+MET  M  1   6.180   0.0  HPhobic
+GLY  G  2   4.500   0.0  SpCase
+LYS  K  3   6.360  +1.0  Charged
+THR  T  4   5.620   0.0  Polar
+ARG  R  5   6.560  +1.0  Charged
+ALA  A  6   5.040   0.0  HPhobic
+ASP  D  7   5.580  -1.0  Charged
+GLU  E  8   5.920  -1.0  Charged
+TYR  Y  9   6.460   0.0  Aromatic
+VAL  V  10  5.860   0.0  HPhobic
+LEU  L  11  6.180   0.0  HPhobic
+GLN  Q  12  6.020   0.0  Polar
+TRP  W  13  6.780   0.0  Aromatic
+PHE  F  14  6.360   0.0  Aromatic
+SER  S  15  5.180   0.0  Polar
+HIS  H  16  6.080  +0.5  Charged
+ASN  N  17  5.680   0.0  Polar
+PRO  P  18  5.560   0.0  SpCase
+CYS  C  19  5.480   0.0  SpCase
+ILE  I  20  6.180   0.0  HPhobic
+

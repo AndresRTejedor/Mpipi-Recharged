@@ -1,6 +1,6 @@
 In order to run DC simulations and compute the phase diagram of the different multi-domain proteins, one needs the following files:
 
-LAMMPS script: lammps_mpipiv2_v31.5_*.lmp (in Scripts directory)
+LAMMPS script: lammps_mpipiv2_v31.5_*.lmp (in ~/Scripts_Mpipi-Recharged directory)
 Configuration file: *.dat (in Data directory)
 Parameters to include in the script: *txt (in Scripts directory)
 
