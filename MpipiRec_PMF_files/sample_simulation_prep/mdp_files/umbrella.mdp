@@ -1,0 +1,103 @@
+; run parameters for position restraints
+; with temperature and pressure equilibration
+; values appropriate for CHARMM27 force field
+
+#################################### INPUT ####################################
+;include               = -I. -I.. -I../top
+define                = -DPOSRES
+
+################################# INTEGRATOR ##################################
+integrator             = md          ; Leap-frog integration
+tinit                  = 0.0         ; Initial time (ps)
+dt                     = 0.002       ; Timestep (ps)
+nsteps                 = 15000000       ; 10ns Simulation duration (timesteps)
+
+nstcomm                = 1000        ; Center of mass motion removal interval (timesteps)
+comm_mode              = linear      ; Center of mass motion removal
+comm_grps              = SYSTEM
+
+################################### OUTPUT ####################################
+nstlog                 = 1000         ; Log output interval (timesteps)
+compressed-x-precision = 100000000        ; Precision for xtc trajectory
+nstxout-compressed     = 100000000         ; xtc trajectory output interval (timesteps)
+nstxout                = 100000000        ; Trajectory output interval (timesteps)
+nstvout                = 100000000         ; Velocity outout interval (timesteps)
+nstfout                = 100000000         ; Force output interval (timesteps)
+nstcalcenergy          = 100         ; Energy calculation interval (timesteps)
+nstenergy              = 1000         ; Energy output interval (timesteps)
+
+
+########################### NONBONDED INTERACTIONS ############################
+cutoff-scheme          = Verlet       ; Method of managing neighbor lists
+nstlist                = 20           ; Update neighbor list every 20 steps
+ns_type                = grid         ; Neighbor-searching algorithm (simple or grid)
+pbc                    = xyz          ; Periodic boundary conditions on
+periodic_molecules     = no           ; Do not treat molecules as periodic
+verlet-buffer-tolerance = -1          ; uses the value of rlist to set the buffer
+
+coulombtype            = PME          ; Calculate coulomb interactions using PME
+rcoulomb               = 0.9          ; Coulomb cutoff (nm)
+rcoulomb_switch        = 0            ; No Coulomb switching
+epsilon_r              = 1            ; relative dielectric constant
+epsilon_rf             = 1            ; relative dielectric constant for reaction field
+
+vdwtype                = Cut-off          ; Calculate van der Waals interactions using cutoff
+;vdw_modifier          = Potential-switch ; Use Van der Waals force switching
+;rvdw_switch           = 0.7              ; Van der Waals force switching (nm)
+rvdw                   = 0.9              ; Van der Waals cutoff (nm)
+rlist                  = 0.9              ; Neighbor list cutoff (nm) – ? (1.4)
+
+DispCorr               = EnerPres     ; Yes for homogeneous liquids
+
+############################### PME PARAMETERS ################################
+pme_order              = 4              ; PME interp order (4 for cubic) – 6 recommended by CHARMM
+ewald_rtol             = 1E-05          ; Relative strength of Ewald-shifted direct pot. @ rcoulomb
+ewald_geometry         = 3d             ; Ewald sum in all 3 dimensions
+epsilon_surface        = 0              ; Turn off (0) dipole correct. to 3D Ewald sum
+
+fourierspacing         = 0.12           ; Lower bound on wavenumber (nm) – Piggot (0.12)
+fourier-nx             = 0              ; 0 to use fourierspacing
+fourier-ny             = 0              ; 0 to use fourierspacing
+fourier-nz             = 0              ; 0 to use fourierspacing
+
+################################## ENSEMBLE ###################################
+tcoupl                 = v-rescale           ; Temp coupling using velocity rescaling
+nsttcouple             = -1                  ; -1 (default) sets to nstlist for nstlist > 0
+tc_grps                = system              ; Thermostat coupling groups (default or in index file)
+tau_t                  = 0.5                 ; Thermostat coupling constant (ps) – ? (0.1)
+ref_t                  = 298.15              ; Reference temperature (K)
+
+;pcoupl                 = Parrinello-Rahman  ; leads to instablities with posres
+pcoupl			= Berendsen          ; better for use of positional restaints 
+pcoupltype             = isotropic
+nstpcouple             = -1                  ; -1 (default) sets to nstlist for nstlist > 0
+tau_p                  = 2.01                 ; Barostat coupling constant (ps) – ? (0.5)
+compressibility        = 4.5e-5              ; Use 4.5E-5 for water @ 1 atm/300 K
+ref_p                  = 1.0                 ; Reference pressure (bar)
+refcoord_scaling       = COM                 ; ref coords scaled w/ scaling matrix of p coupl
+
+##################### GENERATE VELOCITIES FOR STARTUP RUN #####################
+gen_vel                  = yes               ; change back to yes later
+gen_temp                 = 298.15
+gen_seed                 = -1
+
+########################### CONSTRAINTS AND BONDS #############################
+constraints           = h-bonds     ; Convert the bonds with H-atoms to constraints
+constraint_algorithm  = LINCS       ; LINear Constraint Solver (faster + more stable than SHAKE)
+continuation          = no         ; if no, apply constraints to start config. & reset shells
+lincs-order           = 6          ; Highest order in expansion of constraint coupling matrix
+lincs-iter            = 4           ; Number iterations to correct rotational lengthening (LINCS)
+####################### Umbrella Sampling Parameters #########################
+pull                 = yes
+pull-coord1-type     = umbrella
+pull-coord1-geometry = distance
+pull-coord1-dim      = N Y N
+pull-coord1-groups   = 1  2
+pull-ngroups         = 2 
+pull-nstfout         = 100
+pull-nstxout         = 100
+pull-coord1-start    = yes
+pull-group1-name     = chainA
+pull-group2-name     = chainB
+pull-coord1-rate     = 0
+pull-coord1-k        = 6000
